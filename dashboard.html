@@ -177,7 +177,7 @@
             }
 
             let pointsBox = document.getElementById("points-box");
-            pointsBox.textContent = You have earned ${totalPoints} points!; 
+            pointsBox.textContent = `You have earned ${totalPoints} points!`; 
             pointsBox.style.display = totalPoints > 0 ? "block" : "none";
         }
 
@@ -186,18 +186,23 @@
             const infoBox = document.getElementById('info');
             const selections = loadSelections();
 
-            infoBox.innerHTML = `
-                <h3>${category}</h3>
-                ${data[category].map(item => {
-                    const checked = selections[category]?.[item.action] ? "checked" : "";
-                    return `
-                        <label>
-                            <input type='checkbox' ${checked} onchange="saveSelection('${category}', '${item.action}', this.checked)">
-                            ${item.action} (${item.points} pts)
-                        </label>
-                    `;
-                }).join('')}
-            `;
+            // Check if the category exists in the data object
+            if (data[category]) {
+                infoBox.innerHTML = `
+                    <h3>${category}</h3>
+                    ${data[category].map(item => {
+                        const checked = selections[category]?.[item.action] ? "checked" : "";
+                        return `
+                            <label>
+                                <input type='checkbox' ${checked} onchange="saveSelection('${category}', '${item.action}', this.checked)">
+                                ${item.action} (${item.points} pts)
+                            </label>
+                        `;
+                    }).join('')}
+                `;
+            } else {
+                infoBox.innerHTML = `<p>No actions available for this category.</p>`;
+            }
             
             infoBox.style.display = 'block';
         }
